@@ -1,89 +1,90 @@
 #include <stdio.h>
 
-// Function to convert years of experience into a 4-byte binary string
+// 수년간의 경험을 4바이트 바이너리 문자열로 변환하는 함수
 void print_binary(int num) {
-    for (int i = 31; i >= 0; i--) {
-        printf("%d", (num >> i) & 1);
-        if (i % 8 == 0) printf(" "); // Add space every 8 bits for readability
-    }
+(int i = 31; i >= 0; i--)에 대하여 {
+printf("%d", (num >> i) & 1);
+if (i % 8 == 0) printf(" "); // 가독성을 위해 8비트마다 공백 추가
+}
 }
 
-void print_intro(char* intro) {
-    // Print the introduction (automatically wrap lines after a period)
-    printf("Introduction | ");
-    for (int i = 0; intro[i] != '\0'; i++) {
-        printf("%c", intro[i]);
-        if (intro[i] == '.' && intro[i + 1] != '\0') {
-            printf("\n              "); // Wrap line after a period and indent
-        }
-    }
-    printf("\n=====================================================================\n");
+void print_intro(char* 인트로) {
+// 소개 부분을 인쇄합니다(마침표 뒤에 자동으로 줄바꿈)
+printf("소개 | ");
+int i = 0; intro[i] != '\0'; i++에 대해 {
+printf("%c", intro[i]);
+intro[i] == '.' && intro[i + 1] != '\0'인 경우 {
+printf("\n "); // 마침표 뒤에 줄바꿈하고 들여쓰기
+}
+}
+printf("\n===========================================================================\n");
 }
 
-int main() {
-    // Start output
-    printf("[Magrathea] \u2665\u2665 Project Member Introduction ♥♥\n");
-    printf("=====================================================================\n");
+int 메인() {
+// 출력 시작
+printf("[마그라테아] \u2665\u2665 프로젝트 멤버 소개 ♥♥\n");
+printf("============================================================================\n");
 
-    // Arthur Dent
-    printf("Name  | %-15s Gender | %s\n", "Arthur Dent", "Male");
-    printf("Major | %-15s Experience | ", "Mechanical Engineering");
-    print_binary(15);
-    printf("(15) years\n");
-    printf("Role  | %-15s Skills | %s\n", "Architect", "C/C++, Java, Spring, Python, Machine Learning/Deep Learning");
-    printf("---------------------------------------------------------------------\n");
-    printf("Introduction | Gained experience by participating in various projects in Silicon Valley, including SNS, FinTech, HR, and Media.\n");
-    printf("              I want to share the lessons learned through successes and failures with you.\n");
-    printf("=====================================================================\n");
+// 아서 덴트
+printf("이름 | %-15s 성별 | %s\n", "아서 덴트", "남자");
+printf("전공 | 경험 %-15초 | ", "기계공학");
+바이너리를 인쇄하세요(15);
+printf("(15)년\n");
+printf("역할 | %-15s 기술 | %s\n", "아키텍트", "C/C++, Java, Spring, Python, 머신러닝/딥러닝");
+printf("---------------------------------------------------------------------\n");
+printf("소개 | 실리콘밸리에서 SNS, 핀테크, HR, 미디어 등 다양한 프로젝트에 참여하여 경험을 쌓았습니다.\n");
+printf("저는 성공과 실패를 통해 얻은 교훈을 여러분과 공유하고 싶습니다.\n");
+printf("============================================================================\n");
 
-    // Kim Young-jin
-    printf("Name  | %-15s Gender | %-5s\n", "Kim Young-jin", "Male");
-    printf("Major | %-15s Experience | ", "Computer Science");
-    print_binary(2);
-    printf("(2) years\n");
-    printf("Role  | %-15s Skills | %s\n", "Developer", "C#, Python, JavaScript, React, Kotlin");
-    printf("---------------------------------------------------------------------\n");
-    printf("Introduction | Recently, I developed a passion for software development while working on a personal asset management project using the MAUI framework.\n");
-    printf("              Solving real-world problems with my code is exciting! Successfully developing Magrathea is now one of my bucket list goals.\n");
-    printf("=====================================================================\n");
+// 김영진
+printf("이름 | %-15초 성별 | %-5초\n", "김영진", "남자");
+printf("전공 | %-15초 경험 | ", "컴퓨터 과학");
+print_binary(2);
+printf("(2)년\n");
+printf("역할 | %-15s 기술 | %s\n", "개발자", "C#, Python, JavaScript, React, Kotlin");
+printf("---------------------------------------------------------------------\n");
+printf("소개 | 최근 MAUI 프레임워크를 사용하여 개인 자산 관리 프로젝트를 진행하면서 소프트웨어 개발에 대한 열정을 갖게 되었습니다.\n");
+printf("내 코드로 현실 세계의 문제를 해결하는 건 신나는 일이야! Magrathea를 성공적으로 개발하는 건 이제 내 버킷리스트 목표 중 하나야.\n");
+printf("============================================================================\n");
 
-    // Lim Won-cheol
-    printf("Name  | %-15s Gender | %-5s\n", "Lim Won-cheol", "Male");
-    printf("Major | %-15s Experience | ", "Electronics Engineering");
-    print_binary(1);
-    printf("(1) year\n");
-    printf("Role  | %-15s Skills | %s\n", "DBA", "Java, PHP, MongoDB, MS SQL, MySQL");
-    printf("---------------------------------------------------------------------\n");
-    printf("Introduction | I believe applications are ultimately about handling data.\n");
-    printf("              I developed a strong interest in data platforms while studying a Big Data course in university.\n");
-    printf("              The success of this project depends on data, and I’m already excited about working with the data in Magrathea.\n");
-    printf("=====================================================================\n");
+//임원철
+printf("이름 | %-15초 성별 | %-5초\n", "임원철", "남자");
+printf("전공 | %-15초 경험 | ", "전자공학");
+바이너리를 인쇄하세요(1);
+printf("(1) 년\n");
+printf("역할 | %-15s 기술 | %s\n", "DBA", "Java, PHP, MongoDB, MS SQL, MySQL");
+printf("---------------------------------------------------------------------\n");
+printf("소개 | 저는 애플리케이션은 궁극적으로 데이터를 처리하는 것이라고 믿습니다.\n");
+printf("저는 대학에서 빅데이터 과목을 공부하면서 데이터 플랫폼에 큰 관심을 갖게 되었습니다.\n");
+printf("이 프로젝트의 성공은 데이터에 달려있습니다. 저는 이미 Magrathea에서 데이터를 다루는 것에 기대가 큽니다.\n");
+printf("============================================================================\n");
 
-    // Yoo Go-eun
-    printf("Name  | %-15s Gender | %s\n", "Yoo Go-eun", "Female");
-    printf("Major | %-15s Experience | ", "Management Information Systems");
-    print_binary(1);
-    printf("(1) year\n");
-    printf("Role  | %-15s Skills | %s\n", "Cloud Engineer", "Java, PowerShell, Azure, AWS, GCP");
-    printf("---------------------------------------------------------------------\n");
-    printf("Introduction | Worked on a project with Kim Young-jin, handling cloud architecture implementation.\n");
-    printf("              My passion for cloud computing started in college with Microsoft Azure, and through in-depth learning,\n");
-    printf("              I found that understanding other public cloud platforms became easier.\n");
-    printf("              I am determined to complete Magrathea’s cloud architecture with my own hands.\n");
-    printf("=====================================================================\n");
+//유고은
+printf("이름 | %-15s 성별 | %s\n", "유고은", "여자");
+printf("전공 | %-15초 경험 | ", "경영정보시스템");
+바이너리를 인쇄하세요(1);
+printf("(1) 년\n");
+printf("역할 | %-15s 기술 | %s\n", "클라우드 엔지니어", "Java, PowerShell, Azure, AWS, GCP");
+printf("---------------------------------------------------------------------\n");
+printf("소개 | 김영진과 함께 클라우드 아키텍처 구현 프로젝트를 진행했습니다.\n");
+printf("클라우드 컴퓨팅에 대한 저의 열정은 대학 시절 Microsoft Azure를 통해 시작되었고, 심층 학습을 통해\n");
+printf("다른 퍼블릭 클라우드 플랫폼을 이해하는 것이 더 쉬워졌습니다.\n");
+printf("나는 마그라테아의 클라우드 아키텍처를 내 손으로 완성하기로 결심했습니다.\n");
+printf("============================================================================\n");
 
-    // Seo Hye-kyung
-    printf("Name  | %-15s Gender | %s\n", "Seo Hye-kyung", "Female");
-    printf("Major | %-15s Experience | ", "Political Science");
-    print_binary(0);
-    printf("(0) years\n");
-    printf("Role  | %-15s Skills | %s\n", "Developer", "Python, Swift, Kotlin, Node.js, Figma");
-    printf("---------------------------------------------------------------------\n");
-    printf("Introduction | Although I have worked on many projects as assignments in university, this is my first real-world project where a company’s success is at stake.\n");
-    printf("              I’m excited but also a bit anxious about whether I can do well.\n");
-    printf("              When I first heard about the Magrathea project, I felt like this was something I wanted to dedicate my life to.\n");
-    printf("              I had already heard of Arthur’s reputation through LinkedIn, so I am honored to be part of this project.\n");
-    printf("=====================================================================\n");
+// 서혜경
+printf("이름 | %-15s 성별 | %s\n", "서혜경", "여자");
+printf("전공 | 경험 %-15초 | ", "정치학");
+바이너리를 인쇄하세요(0);
+printf("(0)년\n");
+printf("역할 | %-15s 기술 | %s\n", "개발자", "Python, Swift, Kotlin, Node.js, Figma");
+printf("---------------------------------------------------------------------\n");
+printf("서론 | 저는 대학 시절 과제로 많은 프로젝트를 수행했지만, 회사의 성공이 걸린 실제 프로젝트는 이번이 처음입니다.\n");
+printf("기쁘기도 하지만 잘 할 수 있을지 걱정도 됩니다.\n");
+printf("마그라테아 프로젝트에 대해 처음 들었을 때, 저는 제 인생을 바치고 싶은 일이라고 생각했습니다.\n");
+printf("저는 LinkedIn을 통해 Arthur의 명성을 이미 알고 있었기 때문에 이 프로젝트에 참여하게 되어 영광입니다.\n");
+printf("============================================================================\n");
 
-    return 0;
+0을 반환합니다.
 }
+
