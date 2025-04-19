@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 typedef struct {
     char name[30];
@@ -12,11 +11,18 @@ typedef struct {
     char number[80];
 } Judge;
 
-// 문자열 입력 함수: 공백 포함해서 입력받고 줄바꿈 제거
+// 문자열 입력 함수 (공백 포함 + 줄바꿈 제거, string.h 없이)
 void input(char* prompt, char* buffer, int size) {
+    int i;
     printf("%s", prompt);
     fgets(buffer, size, stdin);
-    buffer[strcspn(buffer, "\n")] = '\0'; // 개행 문자 제거
+    // 줄바꿈 제거
+    for (i = 0; i < size; i++) {
+        if (buffer[i] == '\n') {
+            buffer[i] = '\0';
+            break;
+        }
+    }
 }
 
 int main(void) {
@@ -52,7 +58,7 @@ int main(void) {
     // 사용자에게 출력 여부 확인
     printf("\n[PROJECT] 심사위원 정보를 확인할까요? Y/N: ");
     scanf(" %c", &yn);
-    getchar(); // 버퍼에 남은 개행 제거
+    getchar(); // 남아있는 개행 제거
 
     if (yn == 'N' || yn == 'n') {
         printf("프로그램을 종료합니다.\n");
