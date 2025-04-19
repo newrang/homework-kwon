@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct {
     char name[30];
@@ -11,12 +12,17 @@ typedef struct {
     char number[80];
 } Judge;
 
+void input(char* prompt, char* buffer, int size) {
+    printf("%s", prompt);
+    fgets(buffer, size, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0'; // 개행문자 제거
+}
+
 int main(void) {
-    Judge judges[5]; // 5명의 심사위원 정보 저장
-    char yn; // Y/N 입력
+    Judge judges[5];
+    char yn;
     int i = 0;
 
-    // 심사위원 정보 입력
     while (i < 5) {
         printf("####################################\n");
         printf("#      심사위원 명단 데이터 입력       #\n");
@@ -30,27 +36,26 @@ int main(void) {
 
         printf("[%d번 심사위원]\n", i + 1);
 
-        printf("이름: "); scanf("%s", judges[i].name);
-        printf("성별: "); scanf("%s", judges[i].gender);
-        printf("소속: "); scanf("%s", judges[i].enter);
-        printf("직업: "); scanf("%s", judges[i].job);
-        printf("전문분야: "); scanf("%s", judges[i].pro);
-        printf("이메일: "); scanf("%s", judges[i].mail);
-        printf("전화번호: "); scanf("%s", judges[i].number);
+        input("이름: ", judges[i].name, sizeof(judges[i].name));
+        input("성별: ", judges[i].gender, sizeof(judges[i].gender));
+        input("소속: ", judges[i].enter, sizeof(judges[i].enter));
+        input("직업: ", judges[i].job, sizeof(judges[i].job));
+        input("전문분야: ", judges[i].pro, sizeof(judges[i].pro));
+        input("이메일: ", judges[i].mail, sizeof(judges[i].mail));
+        input("전화번호: ", judges[i].number, sizeof(judges[i].number));
 
         i++;
         printf("\n");
     }
 
-    // 사용자에게 출력 여부 확인
     printf("[PROJECT] 심사위원 정보를 확인할까요? Y/N: ");
-    scanf(" %c", &yn); // 공백으로 이전 입력 제거
+    scanf(" %c", &yn);
+    getchar(); // 남은 개행 제거
 
-    if (yn == 'N') {
+    if (yn == 'N' || yn == 'n') {
         printf("프로그램을 종료합니다.\n");
         return 0;
-    } else if (yn == 'Y') {
-        // 예쁜 출력
+    } else if (yn == 'Y' || yn == 'y') {
         printf("####################################\n");
         printf("#        심사위원 데이터 출력        #\n");
         printf("####################################\n");
