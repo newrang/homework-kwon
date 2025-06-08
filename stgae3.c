@@ -92,7 +92,7 @@ char *mill_trainee_nicknames[MAX_TRAINEES] = {
 // 연습생 이름 (과제 1 데이터 기반)
 char *mill_trainee_names[MAX_TRAINEES] = {
     "박지연", "김민준", "이서준", "정유진", "최하윤",
-    "강도현", "윤아인", "서은우", "홍지아", "임지호"
+    "홍길동", "윤아인", "서은우", "홍지아", "임지호"
 };
 
 // 연습생 국적 (과제 1 데이터 기반, 임의 설정)
@@ -211,8 +211,6 @@ typedef struct {
     char correct_or_wrong; // 'O' 또는 'X'
 } QuizAnswerSheet;
 
-// QuizAnswerSheet answers[5]; // 5개 문제에 대한 답안지 (퀴즈마다 초기화)
-
 // Function prototypes (기존)
 void display_main_menu();
 void 오디션_관리();
@@ -254,8 +252,7 @@ void display_binary_and_get_input(const char *keyword);
 void testKoreanLang();
 int selectRandomTakers(int current_hour);
 void serveRandomQuiz(int trainee_idx);
-int isAnswer(int question_id, const char *user_answer, const char *correct_answer); // 보너스 적용 전
-// int isAnswer(int question_id, const char *user_answer, const char *correct_answer, QuizAnswerSheet *answer_sheet_ptr); // 보너스 적용 후
+int isAnswer(int question_id, const char *user_answer, const char *correct_answer);
 
 // Main menu function
 void display_main_menu() {
@@ -320,7 +317,7 @@ void training_management() {
                     char sub_input[MAX_INPUT];
                     printf("\n--- 자기관리와 팀워크 서브 메뉴 ---\n");
                     printf("A. 멘토링\n");
-                    printf("B. 트라우마 관리\n"); // 트라우마 관리 메뉴 추가
+                    printf("B. 트라우마 관리\n");
                     printf("선택 (A, B, 또는 0 훈련 메뉴로 돌아가기): ");
                     fgets(sub_input, MAX_INPUT, stdin);
                     if (strlen(sub_input) > 0 && sub_input[strlen(sub_input) - 1] == '\n') {
@@ -330,9 +327,11 @@ void training_management() {
                     if (toupper(sub_input[0]) == 'A') {
                         matchMentoring();
                     } else if (toupper(sub_input[0]) == 'B') {
-                        overcomeTrauma(); // 트라우마 관리 함수 호출
+                        overcomeTrauma();
                     } else if (strcmp(sub_input, "0") == 0) {
-                        // 훈련 메뉴로 돌아가기, 버퍼는 fgets에 의해 이미 비워졌습니다.
+                        // 2번 훈련 서브 메뉴에서 0을 입력하고 나왔을 때
+                        // 이제는 바로 handle_training을 호출하여 평가 기회를 줍니다.
+                        handle_training(choice);
                     } else {
                         printf("잘못된 입력입니다. A, B 또는 0을 입력하세요.\n");
                     }
@@ -381,10 +380,19 @@ void debut_management() {
 // Check if a training is available
 int is_training_available(int choice) {
     int idx = choice - 1;
+
+    // 이미 통과한 훈련은 다시 선택할 수 없음
+    if (training_status[idx] == 'P') {
+        return 0;
+    }
+
     // Trainings 1 and 2 must be done sequentially
     if (choice == 1 && training_status[0] == 0) {
         return 1;
     }
+    // 2번 훈련은 1번 훈련 통과 시 바로 평가 가능하도록 변경 (서브 메뉴 진입 불필요)
+    // 그러나 2번 훈련을 선택하면 서브 메뉴 진입은 여전히 가능.
+    // 서브 메뉴에서 0을 입력하고 나오면 평가 가능하게 만듬.
     if (choice == 2 && training_status[0] == 'P' && training_status[1] == 0) {
         return 1;
     }
@@ -675,7 +683,7 @@ void input_trauma() {
             (void)(
                 printf("멤버 %s의 트라우마 내용을 입력하세요: ", nickname_input),
                 fgets(trauma_content_input, sizeof(trauma_content_input), stdin),
-                (strlen(trauma_content_input) > 0 && trauma_content_input[strlen(trauma_content_input) - 1] == '\n' ?
+                (strlen(trauma_content_input) > 0 && trauma_content_input[strlen(trauma_content_input) - 1] == '\n' ? // **여기가 수정되었습니다.**
                     (trauma_content_input[strlen(trauma_content_input) - 1] = '\0') : 0),
                 strcpy(trauma_data[trainee_idx].trauma_content, trauma_content_input),
                 trauma_data[trainee_idx].has_trauma = 1,
@@ -688,7 +696,7 @@ void input_trauma() {
         // 다만, 이후의 다음 입력을 위해 버퍼가 비워져야 할 때가 있음.
         // 여기서는 fgets가 이미 한 줄을 읽었으므로, 추가적인 getchar()는 필요 없을 수 있으나,
         // 사용자 입력 방식에 따라 다를 수 있으므로 유지.
-        // while (getchar() != '\n'); 
+        // while (getchar() != '\n');
 
         printf("다른 멤버의 트라우마를 입력하시겠습니까? (Y/N): ");
         fgets(continue_input, MAX_INPUT, stdin);
@@ -890,7 +898,7 @@ void display_consultation_results() {
     printf("\n--- 상담 결과 보기 ---\n");
     printf("상담을 완료한 멤버 목록:\n");
     for (i = 0; i < MAX_TRAINEES; i++) {
-        if (trauma_data[i].has_consultation) {
+        if (trauma_data[i].has_trauma) {
             printf("- %s\n", trauma_data[i].nickname);
             found_consultations = 1;
         }
@@ -1121,7 +1129,7 @@ int selectRandomTakers(int current_hour) {
 
     do {
         // 현재 인덱스부터 순회하며 한국인이 아닌 연습생을 찾습니다.
-        // 이는 모든 연습생을 공정하게 선택하고 한국인 제외 조건을 만족시키기 위함입니다.
+        // 이 방법은 모든 연습생을 공정하게 선택하고 한국인 제외 조건을 만족시키기 위함입니다.
         // 단순 rand() % MAX_TRAINEES는 무한 루프에 빠질 수 있으므로,
         // 모든 후보를 탐색하는 방식으로 변경합니다.
         int check_idx = (random_start_idx + attempts) % MAX_TRAINEES;
@@ -1170,20 +1178,13 @@ void serveRandomQuiz(int trainee_idx) {
         return;
     }
 
-    printf("\n30초 뒤에 한국어 퀴즈가 시작됩니다! 준비하세요.\n");
+    printf("\n5초 뒤에 한국어 퀴즈가 시작됩니다! 준비하세요.\n"); // **5초로 변경된 메시지**
     time(&start_time); // 현재 시간 기록
 
-    // 30초 대기
+    // 5초 대기
     do {
         time(&current_time);
-    } while (difftime(current_time, start_time) < 30);
-    // (Alternative for more precise blocking wait for Windows/Linux:
-    // #ifdef _WIN32
-    // Sleep(30000); // milliseconds
-    // #else
-    // sleep(30); // seconds
-    // #endif
-    // )
+    } while (difftime(current_time, start_time) < 5); // **30 -> 5로 변경된 대기 시간**
 
     printf("\n퀴즈 시작!\n");
 
